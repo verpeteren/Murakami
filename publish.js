@@ -25,6 +25,7 @@ function Each(targetArray, orgArray, formatFunction) {
 
 /*format tools*/
 function formatExample(example) {
+
 	return example.desc || "";
 }
 
@@ -37,11 +38,12 @@ function formatParameter(symbol) {
 				'nullable': '',
 				'examples' : [],
 		};
+
 	return set;
 }
 
 function formatEvent(symbol){
-	var set = { 'name': symbol.alias,
+	var set = { 'name': symbol.name,
 				'description': symbol.desc,
 				'parameters': [],
 				'examples' : [],
@@ -51,6 +53,7 @@ function formatEvent(symbol){
 
 	return set;
 }
+
 function formatField(symbol){
 	var set = { 'name': symbol.name,
 				'type': symbol.type,
@@ -63,11 +66,13 @@ function formatField(symbol){
 
 	return set;
 }
+
 function formatExtend(symbol) {
 	return symbol.alias;
 }
+
 function formatFunction(symbol) {
-	var set = { 'name': symbol.alias,
+	var set = { 'name': symbol.name,
 				'access': '',
 				'virtual': false,
 				'returns': {'type': [], 'description': ''},
@@ -85,16 +90,19 @@ function formatFunction(symbol) {
 	}
 	Each(set.parameters, symbol.params, formatParameter);
 	Each(set.examples, symbol.example, formatExample);
+
 	return set;
 }
+
 function formatConstructor(symbol) {
-	var set = { 'name': symbol.alias,
+	var set = { 'name': symbol.name,
 				'description': symbol.desc,
 				'examples' : [],
 				'parameters' : [],
 	};
-	Each(set.parameters, symbol.parameters, formatParameter);
+	Each(set.parameters, symbol.params, formatParameter);
 	Each(set.examples, symbol.example, formatExample);
+
 	return set;
 }
 
@@ -120,6 +128,7 @@ function formatClass(symbol) {
 	Each(set.fields, symbol.properties, formatField);
 	Each(set.fires, symbol.getEvents(), formatEvent);
 	Each(set.examples, symbol.example, formatExample);
+
 	return set;
 }
 
