@@ -1,9 +1,8 @@
 load(JSDOC.opt.t + '/json2.js');
-//some ustility filters
+//some usability filters {would be better if these were a part of jstoolkit itself)
 function hasNoParent($) {return ($.memberOf == '')}
 function isaFile($) {return ($.is('FILE'))}
 function isaClass($) {return ($.is('CONSTRUCTOR') || $.isNamespace)}
-
 function makeSortby(attribute) {
 	return function(a, b) {
 		if (a[attribute] != undefined && b[attribute] != undefined) {
@@ -15,6 +14,15 @@ function makeSortby(attribute) {
 		}
 	}
 }
+/**
+ * Iterate over an array and push each element on another array after a function has been applied to it
+ *
+ * @param {Array} targetArray The target array
+ * @param {Array{ orgArray The array with the orginal elements
+ * @param {Function} a callback/function with the element as parameter
+ * @private
+ * @returns void 
+ */
 function Each(targetArray, orgArray, formatFunction) {
 	if (orgArray && orgArray.length > 0 ) {
 		for (var i = 0; i < orgArray.length; i++) {
@@ -23,12 +31,24 @@ function Each(targetArray, orgArray, formatFunction) {
 	}
 }
 
-/*format tools*/
+/*
+ * Simple function to set only the properties that we are interested in
+ * 
+ * @param {object} symbol The symbol that will be exported
+ * @private
+ * @returns {object}	The symbol's interesting properties
+ */
 function formatExample(example) {
 
 	return example.desc || "";
 }
-
+/*
+ * Simple function to set only the properties that we are interested in
+ * 
+ * @param {object} symbol The symbol that will be exported
+ * @private
+ * @returns {object}	The symbol's interesting properties
+ */
 function formatParameter(symbol) {
 	var set = { 'name': symbol.name,
 				'type': symbol.type,
@@ -42,6 +62,13 @@ function formatParameter(symbol) {
 	return set;
 }
 
+/*
+ * Simple function to set only the properties that we are interested in
+ * 
+ * @param {object} symbol The symbol that will be exported
+ * @private
+ * @returns {object}	The symbol's interesting properties
+ */
 function formatEvent(symbol){
 	var set = { 'name': symbol.name,
 				'description': symbol.desc,
@@ -54,6 +81,14 @@ function formatEvent(symbol){
 	return set;
 }
 
+/*
+ * Simple function to set only the properties that we are interested in
+ * 
+ * @param {object} symbol The symbol that will be exported
+ * @private
+ * @returns {object}	The symbol's interesting properties
+ */
+
 function formatField(symbol){
 	var set = { 'name': symbol.name,
 				'type': symbol.type,
@@ -63,13 +98,27 @@ function formatField(symbol){
 	};
 	Each(set.examples, symbol.example, formatExample);
 
-
 	return set;
 }
+/*
+ * Simple function to format the symbol' extension
+ * 
+ * @param {object} symbol The symbol that will be exported
+ * @private
+ * @returns {string}	The symbol's name
+ */
 
 function formatExtend(symbol) {
+
 	return symbol.alias;
 }
+/*
+ * Simple function to set only the properties that we are interested in
+ * 
+ * @param {object} symbol The symbol that will be exported
+ * @private
+ * @returns {object}	The symbol's interesting properties
+ */
 
 function formatFunction(symbol) {
 	var set = { 'name': symbol.name,
@@ -94,6 +143,13 @@ function formatFunction(symbol) {
 	return set;
 }
 
+/*
+ * Simple function to set only the properties that we are interested in
+ * 
+ * @param {object} symbol The symbol that will be exported
+ * @private
+ * @returns {object}	The symbol's interesting properties
+ */
 function formatConstructor(symbol) {
 	var set = { 'name': symbol.name,
 				'description': symbol.desc,
@@ -106,7 +162,13 @@ function formatConstructor(symbol) {
 	return set;
 }
 
-
+/*
+ * This 'formats' a Class (including it's constructor, parents, properties, methods, events and examples'
+ * 
+ * @param	{object} symbol Class symbol 
+ * @private
+ * @returns {object} The class symbol's interesting properties
+ */
 function formatClass(symbol) {
 	var set = {
 			'name': 			symbol.alias,
@@ -131,29 +193,26 @@ function formatClass(symbol) {
 
 	return set;
 }
-
-
+/**
+ * This is the function that jstoolkit calls when the data is collected and neends to be exported to the template
+ *
+ * @param	{object} symbolset The whole datastructure (You can inspect it with the commandline option '-Z'
+ */
 function publish(symbolSet) {
 	try {
 		publish.conf = {
 			templateName: 'murakami',
 			templateVersion: '0.0.1',
-			templateLink: 'https://github.com/verpeteren/murakami/'
+			templateLink: 'https://github.com/verpeteren/murakami/',
+			fileName: 'jsdoc.js'
 		};
 		var root = {'classes': []};
-		var symbols = symbolSet.toArray();
-		var classes = symbols.filter(isaClass).sort(makeSortby('alias'));
+		var fileName = (JSDOC.opt.D.fileName) ? JSDOC.opt.D.fileName : publish.conf.fileName;
+		var classes = symbolSet.toArray().filter(isaClass).sort(makeSortby('alias'));
 		for (var i = 0, l = classes.length; i < l; i++) {
-			var symbol = classes[i];
-			var thisClass = formatClass(symbol)
-			root["classes"].push(thisClass);
+			root["classes"].push(formatClass(classes[i]));
 		}
-		//root = classes;
-		if (JSDOC.opt.d === 'console/') {
-			print(JSON.stringify(root));
-		} else {
-			print('This template only supports output to the console. Use the option "-d=console" when you run JSDoc.');
-		}
+		IO.saveFile(JSDOC.opt.d, fileName, JSON.stringify(root));
 	} catch(exception) {
 		if (exception.rhinoException) {
 			exception.rhinoException.printStackTrace();
