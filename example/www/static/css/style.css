@@ -1,0 +1,75 @@
+@charset=UTF-8;
+
+dl {
+	/*display: table-row;*/
+}
+
+dt {
+	display: table-cell;
+	padding-right: 5px;
+	text-align:right;
+	width:100px;
+}
+
+dd {
+	display: table-cell;
+	padding-left: 5px;
+	text-align:left;
+}
+
+button{
+	padding: 10px 30px;
+	margin: 0px 10px 10px 0px;
+	border-radius: 10px;
+	font-size: 20px;
+	color: #005580;
+}
+
+#classList{
+	padding: 5px;
+	margin: 15px;
+	border-radius: 10px;
+	height: 20%;
+	box-shadow: 0px 0px 5px #BBB;
+	border: 1px solid #E5F3FF;
+	background: radial-gradient(#CFCFCF, #EDEDED) repeat scroll 0% 0% transparent;
+}
+
+.className{
+
+}
+
+#classDetails{
+	padding: 5px;
+	margin: 15px;
+	border-radius: 10px;
+	color: #052F45;
+	height: 40%;
+	box-shadow: 0px 0px 5px #BBB;
+	border: 1px solid #E5F3FF;
+	background: radial-gradient(#CFCFCF, #EDEDED) repeat scroll 0% 0% transparent;
+}
+
+#itemDetails{
+	padding: 5px;
+	margin: 15px;
+	border-radius: 10px;
+	color: #18313D;
+	height: 40%;
+	box-shadow: 0px 0px 5px #BBB;
+	border: 1px solid #E5F3FF;
+	background: radial-gradient(#CFCFCF, #EDEDED) repeat scroll 0% 0% transparent;
+}
+
+.key{
+	font-style: italic;
+}
+
+.value{
+	font-weight: bold;
+}
+
+dl.parameter{
+	margin-top:10px;
+	border-bottom:solid 1px #000;
+}

@@ -1,6 +1,6 @@
-ORG='libape-spidermonkey.c'
-TARGET=test.js
-DATA_PATH=out
+ORG=libape-spidermonkey.c
+DATA_PATH=./www/static/js
+TARGET=$(DATA_PATH)/data.js
 
 all: $(TARGET)
 
@@ -9,10 +9,10 @@ include definitions.mk
 $(TARGET): $(ORG)
 	$(JSDOC2) -n -x=c,h $<
 
-$(ORG):
-	wget https://raw.github.com/verpeteren/APE_Server/master/modules/libape-spidermonkey.c
+./tmp/$(ORG): 
+	wget -q https://raw.github.com/verpeteren/APE_Server/master/modules/$(ORG) -O $@
 
-.PHONEY: clean
+.PHONY: clean
 
 clean: 
-	rm -rf $(ORG) $(TARGET)
+	rm -rf ./tmp/$(ORG) $(TARGET)

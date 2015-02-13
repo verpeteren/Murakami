@@ -212,7 +212,7 @@ function publish(symbolSet) {
 		for (var i = 0, l = classes.length; i < l; i++) {
 			root["classes"].push(formatClass(classes[i]));
 		}
-		IO.saveFile(JSDOC.opt.d, fileName, JSON.stringify(root));
+		IO.saveFile(JSDOC.opt.d, fileName, 'var doc = ' + JSON.stringify(root));
 	} catch(exception) {
 		if (exception.rhinoException) {
 			exception.rhinoException.printStackTrace();
